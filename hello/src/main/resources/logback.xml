@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <property name="log.path" value="logs"/>
+    <!-- 附加器appender是配置日志输出到哪的一个标签  -->
+    <!-- 将日志标准输出stdout到控制台   -->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>
+                        %yellow(%d{yyyy-MM-dd HH:mm:ss})  ---[%cyan(%thread)]---> %highlight(%-5level) %green(%logger{50}) - %msg%n
+                    </pattern>
+                </encoder>
+    </appender>
+
+    <!-- 将日志输出到文件   -->
+    <appender name="infoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${log.path}/info.log</file>
+                 <encoder>
+                    <pattern>
+                        %yellow(%d{yyyy-MM-dd HH:mm:ss})  ---[%cyan(%thread)]---> %highlight(%-5level) %green(%logger{50}) - %msg%n
+                     </pattern>
+                 </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 每天日志归档路径以及格式 -->
+        <fileNamePattern>${log.path}/info/log-info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <maxFileSize>100MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <!--日志文件保留天数-->
+        <maxHistory>15</maxHistory>
+        </rollingPolicy>
+        <!-- 此日志文件只记录info级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 子级logger name属性添加package或者类  -->
+    <logger name="com.gwm" level="debug" additivity="false">
+        <appender-ref ref="infoFile"/>
+    </logger>
+    <!--  父级root 将日志输出到appender-ref -->
+    <root level="info">
+        <appender-ref ref="stdout"/>
+    </root>
+</configuration>
