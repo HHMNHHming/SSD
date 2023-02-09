@@ -16,7 +16,7 @@
             <file>${log.path}/info.log</file>
                  <encoder>
                     <pattern>
-                        %yellow(%d{yyyy-MM-dd HH:mm:ss})  ---[%cyan(%thread)]---> %highlight(%-5level) %green(%logger{50}) - %msg%n
+                        %d{yyyy-MM-dd HH:mm:ss}  ---[%thread]---> %-5level %logger{50} - %msg%n
                      </pattern>
                  </encoder>
         <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
@@ -44,5 +44,7 @@
     <!--  父级root 将日志输出到appender-ref -->
     <root level="info">
         <appender-ref ref="stdout"/>
+    <!--  上面的logger配置日志输出到文件，但是只是输出指定包下的日志，在这里配置能输出所有的日志  -->
+    <!--        <appender-ref ref="infoFile"/>-->
     </root>
 </configuration>
